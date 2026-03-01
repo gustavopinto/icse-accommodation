@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Acomodações{% endblock %}
+
+{% block content %}
+<h1>Pessoas procurando Acomodações (<strong>{{ requests|length }})</strong></h1>
+
+{% if requests %}
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Instituição</th>
+      <th>Período</th>
+      <th>Gênero</th>
+      <th>Fumante</th>
+      <th>Preferência de colega</th>
+      <th>E-mail</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for req in requests %}
+    <tr>
+      <td>{{ req.name }}</td>
+      <td>{{ req.institution }}</td>
+      <td>{{ req.check_in.strftime('%d/%m/%Y') }} – {{ req.check_out.strftime('%d/%m/%Y') }}</td>
+      <td>{{ req.gender|capitalize }}</td>
+      <td>{{ 'Sim' if req.smoker else 'Não' }}</td>
+      <td>{{ req.roommate_gender_pref|capitalize }}</td>
+      <td>{{ req.email }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Nenhum pedido registrado ainda.</p>
+{% endif %}
+
+<section class="accommodation-form-section">
+<h2>Registrar pedido de acomodação</h2>
+
+<form method="POST" action="{{ url_for('accommodation.create') }}">
+  {{ form.hidden_tag() }}
+
+  <div>
+    {{ form.name.label }}
+    {{ form.name() }}
+    {% for error in form.name.errors %}
+      <span class="error">{{ error }}</span>
+    {% endfor %}
+  </div>
+
+  <div>
+    {{ form.email.label }}
+    {{ form.email() }}
+    {% for error in form.email.errors %}
+      <span class="error">{{ error }}</span>
+    {% endfor %}
+  </div>
+
+  <div>
+    {{ form.institution.label }}
+    {{ form.institution() }}
+    {% for error in form.institution.errors %}
+      <span class="error">{{ error }}</span>
+    {% endfor %}
+  </div>
+
+  <div>
+    {{ form.check_in.label }}
+    {{ form.check_in() }}
+    {% for error in form.check_in.errors %}
+      <span class="error">{{ error }}</span>
+    {% endfor %}
+  </div>
+
+  <div>
+    {{ form.check_out.label }}
+    {{ form.check_out() }}
+    {% for error in form.check_out.errors %}
+      <span class="error">{{ error }}</span>
+    {% endfor %}
+  </div>
+
+  <div>
+    {{ form.gender.label }}
+    {{ form.gender() }}
+    {% for error in form.gender.errors %}
+      <span class="error">{{ error }}</span>
+    {% endfor %}
+  </div>
+
+  <div>
+    {{ form.roommate_gender_pref.label }}
+    {{ form.roommate_gender_pref() }}
+    {% for error in form.roommate_gender_pref.errors %}
+      <span class="error">{{ error }}</span>
+    {% endfor %}
+  </div>
+
+  <div>
+    <label>{{ form.smoker() }} {{ form.smoker.label.text }}</label>
+    {% for error in form.smoker.errors %}
+      <span class="error">{{ error }}</span>
+    {% endfor %}
+  </div>
+
+  <div>
+    {{ form.notes.label }}
+    {{ form.notes() }}
+    {% for error in form.notes.errors %}
+      <span class="error">{{ error }}</span>
+    {% endfor %}
+  </div>
+
+  <div>
+    {{ form.submit() }}
+  </div>
+</form>
+</section>
+{% endblock %}
