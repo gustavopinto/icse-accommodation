@@ -14,83 +14,83 @@ from wtforms.validators import DataRequired, Email, Length, Optional, Validation
 
 class AccommodationRequestForm(FlaskForm):
     name = StringField(
-        "Nome completo",
+        "Full name",
         validators=[DataRequired(), Length(min=2, max=60)],
         render_kw={"maxlength": "60", "minlength": "2"},
     )
     email = StringField(
-        "E-mail",
+        "Email",
         validators=[DataRequired(), Email()],
         render_kw={"type": "email", "maxlength": "100"},
     )
     institution = StringField(
-        "Instituição",
+        "Institution",
         validators=[DataRequired(), Length(max=100)],
         render_kw={"maxlength": "100"},
     )
     check_in = DateField(
-        "Data de chegada",
+        "Check-in date",
         default=date(2026, 4, 12),
         validators=[DataRequired()],
     )
     check_out = DateField(
-        "Data de saída",
+        "Check-out date",
         default=date(2026, 4, 18),
         validators=[DataRequired()],
     )
     gender = SelectField(
-        "Eu me identifico como",
+        "I identify as",
         choices=[
-            ("masculino", "Masculino"),
-            ("feminino", "Feminino"),
-            ("nao_binario", "Não-binário"),
-            ("outro", "Outro"),
-            ("prefiro_nao_dizer", "Prefiro não dizer"),
+            ("masculino", "Male"),
+            ("feminino", "Female"),
+            ("nao_binario", "Non-binary"),
+            ("outro", "Other"),
+            ("prefiro_nao_dizer", "Prefer not to say"),
         ],
         validators=[DataRequired()],
     )
     roommate_gender_pref = SelectField(
-        "Procuro pessoas",
+        "I'm looking for",
         choices=[
-            ("sem_restricoes", "Sem restrições"),
-            ("masculino", "Masculino"),
-            ("feminino", "Feminino"),
-            ("nao_binario", "Não-binário"),
-            ("outro", "Outro"),
+            ("sem_restricoes", "No preference"),
+            ("masculino", "Male"),
+            ("feminino", "Female"),
+            ("nao_binario", "Non-binary"),
+            ("outro", "Other"),
         ],
         validators=[DataRequired()],
     )
-    smoker = BooleanField("Fumante")
+    smoker = BooleanField("Smoker")
     social_media = StringField(
-        "Rede social",
+        "Social media",
         validators=[Optional(), Length(max=150)],
         render_kw={"type": "url", "maxlength": "150", "placeholder": "https://linkedin.com/in/…"},
     )
     website = StringField(
-        "Site pessoal",
+        "Personal website",
         validators=[Optional(), Length(max=150)],
         render_kw={"type": "url", "maxlength": "150", "placeholder": "https://…"},
     )
     notes = TextAreaField(
-        "Observações",
+        "Notes",
         validators=[Optional(), Length(max=280)],
         render_kw={"maxlength": "280"},
     )
     data_sharing_consent = BooleanField(
-        "Concordo com o compartilhamento dos meus dados",
-        validators=[DataRequired(message="É necessário concordar com o compartilhamento dos dados para enviar o pedido.")],
+        "I agree to share my data publicly",
+        validators=[DataRequired(message="You must agree to share your data to submit the request.")],
     )
-    submit = SubmitField("Registrar pedido")
+    submit = SubmitField("Submit request")
 
     _EVENT_START = date(2026, 4, 10)
     _EVENT_END = date(2026, 4, 20)
 
     def validate_check_in(self, field):
         if field.data and not (self._EVENT_START <= field.data <= self._EVENT_END):
-            raise ValidationError("Data fora do período do evento (10/04 a 20/04).")
+            raise ValidationError("Date outside the event period (Apr 10–Apr 20).")
 
     def validate_check_out(self, field):
         if field.data and not (self._EVENT_START <= field.data <= self._EVENT_END):
-            raise ValidationError("Data fora do período do evento (10/04 a 20/04).")
+            raise ValidationError("Date outside the event period (Apr 10–Apr 20).")
         if self.check_in.data and field.data and field.data <= self.check_in.data:
-            raise ValidationError("A data de saída deve ser posterior à data de chegada.")
+            raise ValidationError("Check-out date must be after check-in date.")

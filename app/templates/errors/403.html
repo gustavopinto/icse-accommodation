@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% block title %}403 - Acesso negado{% endblock %}
+{% block title %}403 - Forbidden{% endblock %}
 {% block content %}
 <h1>403</h1>
-<p>Você não tem permissão para acessar esta página.</p>
-<a href="{{ url_for('main.index') }}">Voltar ao início</a>
+<p>You don't have permission to access this page.</p>
+<a href="{{ url_for('accommodation.index') }}">Back to home</a>
 {% endblock %}

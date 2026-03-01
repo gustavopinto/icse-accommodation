@@ -25,12 +25,10 @@ def create_app(config_name: str | None = None) -> Flask:
     bcrypt.init_app(app)
     csrf.init_app(app)
 
-    from app.routes.main import main_bp
     from app.routes.accommodation import accommodation_bp
     from app.routes.admin import admin_bp
 
-    app.register_blueprint(main_bp)
-    app.register_blueprint(accommodation_bp, url_prefix="/acomodacoes")
+    app.register_blueprint(accommodation_bp)
     app.register_blueprint(admin_bp, url_prefix="/admin")
 
     from app.routes.errors import register_error_handlers

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% block title %}500 - Erro interno{% endblock %}
+{% block title %}500 - Internal Server Error{% endblock %}
 {% block content %}
 <h1>500</h1>
-<p>Ocorreu um erro interno. Tente novamente mais tarde.</p>
-<a href="{{ url_for('main.index') }}">Voltar ao início</a>
+<p>An internal error occurred. Please try again later.</p>
+<a href="{{ url_for('accommodation.index') }}">Back to home</a>
 {% endblock %}

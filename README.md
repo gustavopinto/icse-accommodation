@@ -1,26 +1,26 @@
-# ICSE 2026 — Acomodações
+# ICSE 2026 — Accommodation
 
-Site para que participantes do [ICSE 2026](https://conf.researchr.org/home/icse-2026) (Rio de Janeiro) possam encontrar pessoas interessadas em compartilhar hospedagem.
+A site for [ICSE 2026](https://conf.researchr.org/home/icse-2026) (Rio de Janeiro) attendees to find people interested in sharing accommodation.
 
-> **Este site não tem nenhuma relação oficial com o evento.** É uma iniciativa individual de [Gustavo Pinto](https://gustavopinto.org).
+> **This site has no official affiliation with the conference.** It is an individual initiative by [Gustavo Pinto](https://gustavopinto.org).
 
-## Funcionalidades
+## Features
 
-- Listagem pública de pedidos de acomodação
-- Formulário de registro sem necessidade de cadastro (apenas e-mail válido)
-- Campos: nome, e-mail, instituição, período (check-in/check-out), identidade de gênero, preferência de colega, fumante, rede social e site pessoal
-- Ícone da rede social detectado automaticamente pela URL (LinkedIn, GitHub, Instagram, X, etc.)
+- Public listing of accommodation requests
+- Registration form — no account needed, just a valid email
+- Fields: name, email, institution, period (check-in/check-out), gender identity, roommate preference, smoker, social media, and personal website
+- Social network icon automatically detected from the URL (LinkedIn, GitHub, Instagram, X, etc.)
 
 ## Stack
 
 - **Python 3.11+** / **Flask 3**
 - **Flask-SQLAlchemy** + **Flask-Migrate** (Alembic)
-- **Flask-WTF** (formulários com CSRF)
-- **PostgreSQL** (ex.: [Neon](https://neon.tech)); SQLite só para testes locais opcionais
+- **Flask-WTF** (forms with CSRF protection)
+- **PostgreSQL** (e.g. [Neon](https://neon.tech)); SQLite for local testing only
 
-## Configuração local
+## Local setup
 
-**1. Clonar e criar o ambiente virtual**
+**1. Clone and create virtual environment**
 
 ```bash
 git clone https://github.com/gustavopinto/icse-accommodation.git
@@ -29,54 +29,31 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-**2. Instalar dependências**
+**2. Install dependencies**
 
 ```bash
 pip install -r requirements.txt
-# ou requirements-dev.txt se for desenvolver
+# or requirements-dev.txt for development
 ```
 
-**3. Variáveis de ambiente**
+**3. Environment variables**
 
-Copie `.env.example` para `.env` e preencha. **Nunca commite o `.env`** (credenciais).
+Copy `.env.example` to `.env` and fill in the values. **Never commit `.env`** (it contains credentials).
 
-**4. PostgreSQL rodando localmente**
-
-Se o Postgres estiver na sua máquina:
-
-- **Criar o banco** (no terminal, com o Postgres ativo):
-  ```bash
-  createdb icse_accommodation
-  ```
-  Ou via `psql`: `CREATE DATABASE icse_accommodation;`
-
-- No `.env`, defina a URL (troque usuário/senha se necessário):
-  ```env
-  DATABASE_URL=postgresql://postgres:postgres@localhost:5432/icse_accommodation
-  ```
-  No macOS, o usuário padrão costuma ser o do sistema; se não tiver senha, use por exemplo:
-  ```env
-  DATABASE_URL=postgresql://SEU_USUARIO@localhost:5432/icse_accommodation
-  ```
-
-**5. Migrar e popular o banco**
+**4. Database**
 
 ```bash
 flask --app wsgi.py db upgrade
-python scripts/seed.py
 ```
 
-O `scripts/seed.py` cria um administrador na tabela `admins` usando `ADMIN_USERNAME` e `ADMIN_PASSWORD` do `.env` (se ainda não existir). O login do painel admin em `/admin/login` usa essa tabela.
-
-**6. Rodar o servidor**
+**5. Run the server**
 
 ```bash
 flask --app wsgi.py run --debug
-# ou, para usar a porta 5001: flask --app wsgi.py run --debug --port 5001
 ```
 
-Acesse: http://127.0.0.1:5000 (ou a porta que o Flask indicar, ex.: 5001). Painel admin: `/admin/login` (use o usuário e a senha definidos no `.env` e criados pelo seed).
+Visit: http://127.0.0.1:5000 — Admin panel: `/admin/login`
 
-## Contribuindo
+## Contributing
 
-Bugs e pull requests são bem-vindos em [github.com/gustavopinto/icse-accommodation](https://github.com/gustavopinto/icse-accommodation).
+Bugs and pull requests are welcome at [github.com/gustavopinto/icse-accommodation](https://github.com/gustavopinto/icse-accommodation).

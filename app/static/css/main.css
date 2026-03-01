@@ -7,15 +7,15 @@ body {
   background: #f8f8f8;
 }
 
+/* ── Nav ─────────────────────────────────── */
 nav {
   display: flex;
   gap: 1rem;
-  padding: 1rem 2rem;
+  padding: 0.875rem 1.5rem;
   background: #fff;
   border-bottom: 1px solid #e0e0e0;
 }
 
-/* Links: mesmo estilo em toda a página */
 a {
   color: #0066cc;
   text-decoration: none;
@@ -24,17 +24,31 @@ a:hover {
   text-decoration: underline;
 }
 
-main {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-}
-
 .nav-single {
   font-weight: 600;
   color: #333;
 }
 
+/* ── Layout ──────────────────────────────── */
+main {
+  max-width: 860px;
+  margin: 2rem auto;
+  padding: 0 1.25rem;
+}
+
+h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.75rem;
+  color: #111;
+}
+
+h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  color: #222;
+}
+
+/* ── Description / credits ───────────────── */
 .site-description {
   margin-bottom: 0.75rem;
   color: #444;
@@ -46,9 +60,10 @@ main {
   color: #666;
 }
 
+/* ── Footer ──────────────────────────────── */
 .site-footer {
   margin-top: 3rem;
-  padding: 1.5rem 2rem;
+  padding: 1.25rem 1.5rem;
   border-top: 1px solid #e0e0e0;
   background: #f0f0f0;
   font-size: 0.875rem;
@@ -57,11 +72,12 @@ main {
 }
 
 .site-footer p {
-  max-width: 800px;
+  max-width: 860px;
   margin: 0 auto;
   line-height: 1.5;
 }
 
+/* ── Alerts ──────────────────────────────── */
 .alert {
   padding: 0.75rem 1rem;
   border-radius: 4px;
@@ -73,13 +89,42 @@ main {
 .alert-info    { background: #d1ecf1; color: #0c5460; }
 .alert-warning { background: #fff3cd; color: #856404; }
 
-/* ── Form grid layout ─────────────────────────────── */
-.form-row {
-  display: grid;
-  grid-template-columns: 180px 1fr;
-  align-items: baseline;
-  gap: 0.35rem 1rem;
-  margin-bottom: 0.75rem;
+/* ── Table ───────────────────────────────── */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1.5rem;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  white-space: nowrap;
+}
+
+table th,
+table td {
+  border-bottom: 1px solid #e8e8e8;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+table tbody tr:last-child td { border-bottom: none; }
+
+table thead th {
+  background: #f5f5f5;
+  font-weight: 600;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+table tbody tr:hover { background: #fafafa; }
+
+/* ── Form grid layout ────────────────────── */
+.accommodation-form-section {
+  margin-top: 2.5rem;
 }
 
 .form-required-note {
@@ -88,14 +133,18 @@ main {
   color: #555;
 }
 
-.form-required-note .required {
+.form-required-note .required,
+.form-row .required {
   color: #c00;
   font-weight: bold;
 }
 
-.form-row .required {
-  color: #c00;
-  font-weight: bold;
+.form-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  align-items: baseline;
+  gap: 0.35rem 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .form-label-cell {
@@ -105,21 +154,12 @@ main {
   color: #333;
 }
 
-.form-row.checkbox-row .form-label-cell {
-  padding-top: 0;
-}
+.form-row.checkbox-row { align-items: center; }
+.form-row.checkbox-row .form-label-cell { padding-top: 0; }
+.form-row.checkbox-row .field-wrap { align-items: flex-start; }
 
-.form-row.checkbox-row {
-  align-items: center;
-}
-
-.form-row.checkbox-row .field-wrap {
-  align-items: flex-start;
-}
-
-.form-row.checkbox-row label {
-  padding-top: 0;
-}
+.form-row.submit-row { grid-template-columns: 180px 1fr; }
+.form-row.submit-row .field-wrap { flex-direction: row; }
 
 .field-wrap {
   display: flex;
@@ -127,7 +167,7 @@ main {
   gap: 0.2rem;
 }
 
-/* ── Unified input style ──────────────────────────── */
+/* ── Inputs (unified) ────────────────────── */
 form input[type="text"],
 form input[type="email"],
 form input[type="password"],
@@ -154,7 +194,7 @@ form select:focus,
 form textarea:focus {
   outline: none;
   border-color: #0066cc;
-  box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.15);
 }
 
 form textarea {
@@ -174,53 +214,12 @@ form input[type="submit"] {
 
 form input[type="submit"]:hover { background: #0052a3; }
 
-/* submit row: offset to align with input column */
-.form-row.submit-row {
-  grid-template-columns: 180px 1fr;
-}
-.form-row.submit-row .field-wrap {
-  flex-direction: row;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  overflow: hidden;
-  background: #fff;
-}
-table th,
-table td {
-  border: 1px solid #e8e8e8;
-  padding: 0.5rem 0.75rem;
-  text-align: left;
-}
-table thead th {
-  background: #f5f5f5;
-  font-weight: 600;
-}
-
-.accommodation-form-section {
-  margin-top: 3rem;
-}
-
-.icon-gender {
-  font-size: 1.25em;
-  line-height: 1;
-}
-.icon-yes {
-  color: #0d7d0d;
-  font-weight: bold;
-  font-size: 1.1em;
-}
-.icon-no {
-  color: #999;
-  font-weight: bold;
-  font-size: 1.1em;
-}
-
 .error { color: #dc3545; font-size: 0.875rem; }
+
+/* ── Misc ─────────────────────────────────── */
+.icon-gender { font-size: 1.25em; line-height: 1; }
+.icon-yes { color: #0d7d0d; font-weight: bold; font-size: 1.1em; }
+.icon-no  { color: #999;    font-weight: bold; font-size: 1.1em; }
 
 .btn-delete {
   padding: 0.3rem 0.75rem;
@@ -230,25 +229,20 @@ table thead th {
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.85rem;
+  white-space: nowrap;
 }
 .btn-delete:hover { background: #b02a37; }
 
-/* Rede social na tabela */
-.social-cell {
-  white-space: nowrap;
-}
+.social-cell { white-space: nowrap; }
+
 .social-icon-link {
   display: inline-flex;
   align-items: center;
   color: #555;
   text-decoration: none;
 }
-.social-icon-link:hover {
-  color: #0066cc;
-  text-decoration: none;
-}
+.social-icon-link:hover { color: #0066cc; }
 
-/* Botão contato (ícone e-mail) */
 .btn-contact-icon {
   display: inline-flex;
   align-items: center;
@@ -257,21 +251,11 @@ table thead th {
   text-decoration: none;
   padding: 0.25rem;
 }
-.btn-contact-icon:hover {
-  color: #0066cc;
-  text-decoration: none;
-}
+.btn-contact-icon:hover { color: #0066cc; }
 
-.social-icon {
-  display: inline-flex;
-  line-height: 1;
-}
-.social-icon svg {
-  display: block;
-  vertical-align: middle;
-}
+.social-icon { display: inline-flex; line-height: 1; }
+.social-icon svg { display: block; }
 
-/* Botão como link (ex.: "saiba mais") */
 .link-button {
   background: none;
   border: none;
@@ -281,11 +265,9 @@ table thead th {
   cursor: pointer;
   text-decoration: underline;
 }
-.link-button:hover {
-  color: #004499;
-}
+.link-button:hover { color: #004499; }
 
-/* Modal compartilhamento de dados */
+/* ── Modal ───────────────────────────────── */
 .modal {
   position: fixed;
   inset: 0;
@@ -295,31 +277,28 @@ table thead th {
   justify-content: center;
   padding: 1rem;
 }
-.modal[hidden] {
-  display: none;
-}
+.modal[hidden] { display: none; }
+
 .modal-backdrop {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
   cursor: pointer;
 }
+
 .modal-content {
   position: relative;
   background: #fff;
   border-radius: 8px;
   padding: 1.5rem;
   max-width: 28rem;
+  width: 100%;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
-.modal-title {
-  margin: 0 0 0.75rem;
-  font-size: 1.15rem;
-}
-.modal-content p {
-  margin: 0 0 1rem;
-  line-height: 1.5;
-}
+
+.modal-title { margin: 0 0 0.75rem; font-size: 1.15rem; }
+.modal-content p { margin: 0 0 1rem; line-height: 1.5; }
+
 .modal-close {
   padding: 0.35rem 0.75rem;
   background: #333;
@@ -329,6 +308,51 @@ table thead th {
   cursor: pointer;
   font-size: 0.9rem;
 }
-.modal-close:hover {
-  background: #000;
+.modal-close:hover { background: #000; }
+
+/* ── Responsive ──────────────────────────── */
+@media (max-width: 640px) {
+  main {
+    margin: 1rem auto;
+    padding: 0 0.875rem;
+  }
+
+  h1 { font-size: 1.4rem; }
+  h2 { font-size: 1.1rem; }
+
+  nav { padding: 0.75rem 0.875rem; }
+
+  .site-footer { padding: 1rem 0.875rem; }
+
+  /* Form: single-column stack */
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-label-cell {
+    text-align: left;
+    padding-top: 0;
+  }
+
+  .form-row.submit-row { grid-template-columns: 1fr; }
+
+  .form-row.checkbox-row {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .form-row.checkbox-row .form-label-cell {
+    text-align: left;
+    font-weight: 600;
+  }
+
+  form input[type="submit"] {
+    width: 100%;
+    padding: 0.65rem;
+  }
 }
