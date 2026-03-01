@@ -1,3 +1,5 @@
+from datetime import date
+
 from flask_wtf import FlaskForm
 from wtforms import (
     StringField,
@@ -26,8 +28,16 @@ class AccommodationRequestForm(FlaskForm):
         validators=[DataRequired(), Length(max=100)],
         render_kw={"maxlength": "100"},
     )
-    check_in = DateField("Data de chegada", validators=[DataRequired()])
-    check_out = DateField("Data de saída", validators=[DataRequired()])
+    check_in = DateField(
+        "Data de chegada",
+        default=date(2026, 4, 12),
+        validators=[DataRequired()],
+    )
+    check_out = DateField(
+        "Data de saída",
+        default=date(2026, 4, 18),
+        validators=[DataRequired()],
+    )
     gender = SelectField(
         "Eu me identifico como",
         choices=[

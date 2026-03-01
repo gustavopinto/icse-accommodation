@@ -24,7 +24,6 @@
       <th>Período</th>
       <th>Eu me identifico como</th>
       <th>Fumante</th>
-      <th>Aceita Fumante</th>
       <th>Procuro pessoas</th>
       <th>E-mail</th>
     </tr>
@@ -44,10 +43,6 @@
       </td>
       <td>
         {% if req.smoker %}<span class="icon-yes" title="Sim">✓</span>
-        {% else %}<span class="icon-no" title="Não">✗</span>{% endif %}
-      </td>
-      <td>
-        {% if req.accepts_smoker %}<span class="icon-yes" title="Sim">✓</span>
         {% else %}<span class="icon-no" title="Não">✗</span>{% endif %}
       </td>
       <td>
