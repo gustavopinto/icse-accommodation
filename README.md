@@ -40,26 +40,33 @@ pip install -r requirements.txt
 
 Copie `.env.example` para `.env` e preencha. **Nunca commite o `.env`** (credenciais).
 
-```env
-FLASK_ENV=development
-SECRET_KEY=troque-por-uma-chave-segura
-# Obrigatório para rodar com banco real:
-DATABASE_URL=postgresql://USER:PASSWORD@HOST/DB?sslmode=require
-```
+**4. PostgreSQL rodando localmente**
 
-**4. Banco de dados**
+Se o Postgres estiver na sua máquina:
+
+- **Criar o banco** (no terminal, com o Postgres ativo):
+  ```bash
+  createdb icse_accommodation
+  ```
+  Ou via `psql`: `CREATE DATABASE icse_accommodation;`
+
+- No `.env`, defina a URL (troque usuário/senha se necessário):
+  ```env
+  DATABASE_URL=postgresql://postgres:postgres@localhost:5432/icse_accommodation
+  ```
+  No macOS, o usuário padrão costuma ser o do sistema; se não tiver senha, use por exemplo:
+  ```env
+  DATABASE_URL=postgresql://SEU_USUARIO@localhost:5432/icse_accommodation
+  ```
+
+**5. Migrar e popular o banco**
 
 ```bash
 flask --app wsgi.py db upgrade
-```
-
-**5. Criar o administrador (painel /admin)**
-
-```bash
 python scripts/seed.py
 ```
 
-Isso cria o usuário **ghlp** com senha **1234** na tabela `admins` (se ainda não existir). O login do painel admin em `/admin/login` usa essa tabela.
+O `scripts/seed.py` cria um administrador na tabela `admins` usando `ADMIN_USERNAME` e `ADMIN_PASSWORD` do `.env` (se ainda não existir). O login do painel admin em `/admin/login` usa essa tabela.
 
 **6. Rodar o servidor**
 
@@ -68,7 +75,7 @@ flask --app wsgi.py run --debug
 # ou, para usar a porta 5001: flask --app wsgi.py run --debug --port 5001
 ```
 
-Acesse: http://127.0.0.1:5000 (ou a porta que o Flask indicar, ex.: 5001). Painel admin: http://127.0.0.1:5001/admin/login (usuário **ghlp**, senha **1234**, após rodar o seed).
+Acesse: http://127.0.0.1:5000 (ou a porta que o Flask indicar, ex.: 5001). Painel admin: `/admin/login` (use o usuário e a senha definidos no `.env` e criados pelo seed).
 
 ## Contribuindo
 
