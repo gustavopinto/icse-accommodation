@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Admin — Registros{% endblock %}
+
+{% block content %}
+<h1>Administração</h1>
+
+<p style="text-align:right">
+  <a href="{{ url_for('admin.logout') }}">Sair</a>
+</p>
+
+<h2>Registros de acomodação ({{ entries|length }})</h2>
+
+{% if entries %}
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Nome</th>
+      <th>E-mail</th>
+      <th>Instituição</th>
+      <th>Período</th>
+      <th>Gênero</th>
+      <th>Fumante</th>
+      <th>Aceita Fumante</th>
+      <th>Procuro</th>
+      <th>Rede social</th>
+      <th>Site</th>
+      <th>Observações</th>
+      <th>Cadastrado em</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for e in entries %}
+    <tr>
+      <td>{{ e.id }}</td>
+      <td>{{ e.name }}</td>
+      <td>{{ e.email }}</td>
+      <td>{{ e.institution }}</td>
+      <td>{{ e.check_in.strftime('%d/%m/%Y') }} – {{ e.check_out.strftime('%d/%m/%Y') }}</td>
+      <td>{{ e.gender }}</td>
+      <td>{{ 'Sim' if e.smoker else 'Não' }}</td>
+      <td>{{ 'Sim' if e.accepts_smoker else 'Não' }}</td>
+      <td>{{ e.roommate_gender_pref }}</td>
+      <td>{% if e.social_media %}<a href="{{ e.social_media }}" target="_blank" rel="noopener">{{ e.social_media }}</a>{% endif %}</td>
+      <td>{% if e.website %}<a href="{{ e.website }}" target="_blank" rel="noopener">{{ e.website }}</a>{% endif %}</td>
+      <td>{{ e.notes or '—' }}</td>
+      <td>{{ e.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+      <td>
+        <form method="POST" action="{{ url_for('admin.delete', entry_id=e.id) }}"
+              onsubmit="return confirm('Remover registro de {{ e.name }}?')">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn-delete">Remover</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Nenhum registro encontrado.</p>
+{% endif %}
+{% endblock %}

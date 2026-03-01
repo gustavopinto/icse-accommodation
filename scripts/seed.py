@@ -8,18 +8,18 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from app import create_app, db
-from app.models.user import User
+from app.models.admin import Admin
 
 app = create_app()
 
 with app.app_context():
     db.create_all()
 
-    if not User.query.filter_by(email="admin@example.com").first():
-        admin = User(name="Admin", email="admin@example.com")
-        admin.set_password("admin123")
-        db.session.add(admin)
+    if not Admin.query.filter_by(username="ghlp").first():
+        admin_user = Admin(username="ghlp")
+        admin_user.set_password("1234")
+        db.session.add(admin_user)
         db.session.commit()
-        print("Admin criado: admin@example.com / admin123")
+        print("Administrador (painel /admin) criado: ghlp / 1234")
     else:
-        print("Admin já existe.")
+        print("Administrador ghlp já existe.")

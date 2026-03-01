@@ -2,9 +2,11 @@ import os
 
 
 def _database_uri() -> str:
-    url = os.environ.get("DATABASE_URL", "sqlite:///app.db")
+    url = (os.environ.get("DATABASE_URL") or "").strip()
+    if not url:
+        url = "sqlite:///app.db"
     # Alguns PaaS usam postgres://; SQLAlchemy 1.4+ exige postgresql://
-    if url.startswith("postgres://"):
+    elif url.startswith("postgres://"):
         url = "postgresql://" + url[len("postgres://") :]
     return url
 

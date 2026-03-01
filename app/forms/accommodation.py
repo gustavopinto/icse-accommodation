@@ -76,8 +76,21 @@ class AccommodationRequestForm(FlaskForm):
         validators=[Optional(), Length(max=280)],
         render_kw={"maxlength": "280"},
     )
+    data_sharing_consent = BooleanField(
+        "Concordo com o compartilhamento dos meus dados",
+        validators=[DataRequired(message="É necessário concordar com o compartilhamento dos dados para enviar o pedido.")],
+    )
     submit = SubmitField("Registrar pedido")
 
+    _EVENT_START = date(2026, 4, 10)
+    _EVENT_END = date(2026, 4, 20)
+
+    def validate_check_in(self, field):
+        if field.data and not (self._EVENT_START <= field.data <= self._EVENT_END):
+            raise ValidationError("Data fora do período do evento (10/04 a 20/04).")
+
     def validate_check_out(self, field):
+        if field.data and not (self._EVENT_START <= field.data <= self._EVENT_END):
+            raise ValidationError("Data fora do período do evento (10/04 a 20/04).")
         if self.check_in.data and field.data and field.data <= self.check_in.data:
             raise ValidationError("A data de saída deve ser posterior à data de chegada.")

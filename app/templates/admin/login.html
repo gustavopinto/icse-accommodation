@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Admin — Login{% endblock %}
+
+{% block content %}
+<h1>Administração</h1>
+
+<section class="accommodation-form-section">
+  <h2>Acesso restrito</h2>
+
+  <form method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="form-row">
+      <div class="form-label-cell">{{ form.username.label }}</div>
+      <div class="field-wrap">
+        {{ form.username(autofocus=true) }}
+        {% for error in form.username.errors %}<span class="error">{{ error }}</span>{% endfor %}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-label-cell">{{ form.password.label }}</div>
+      <div class="field-wrap">
+        {{ form.password() }}
+        {% for error in form.password.errors %}<span class="error">{{ error }}</span>{% endfor %}
+      </div>
+    </div>
+
+    <div class="form-row submit-row">
+      <div class="form-label-cell"></div>
+      <div class="field-wrap">
+        {{ form.submit() }}
+      </div>
+    </div>
+  </form>
+</section>
+{% endblock %}

@@ -53,13 +53,22 @@ DATABASE_URL=postgresql://USER:PASSWORD@HOST/DB?sslmode=require
 flask --app wsgi.py db upgrade
 ```
 
-**5. Rodar o servidor**
+**5. Criar o administrador (painel /admin)**
+
+```bash
+python scripts/seed.py
+```
+
+Isso cria o usuário **ghlp** com senha **1234** na tabela `admins` (se ainda não existir). O login do painel admin em `/admin/login` usa essa tabela.
+
+**6. Rodar o servidor**
 
 ```bash
 flask --app wsgi.py run --debug
+# ou, para usar a porta 5001: flask --app wsgi.py run --debug --port 5001
 ```
 
-Acesse: http://127.0.0.1:5000
+Acesse: http://127.0.0.1:5000 (ou a porta que o Flask indicar, ex.: 5001). Painel admin: http://127.0.0.1:5001/admin/login (usuário **ghlp**, senha **1234**, após rodar o seed).
 
 ## Contribuindo
 

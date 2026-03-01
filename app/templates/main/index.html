@@ -5,7 +5,4 @@
 {% block content %}
 <h1>Bem-vindo!</h1>
 <p>Projeto Flask full stack pronto para uso.</p>
-{% if not current_user.is_authenticated %}
-  <a href="{{ url_for('auth.register') }}">Criar conta</a>
-{% endif %}
 {% endblock %}
