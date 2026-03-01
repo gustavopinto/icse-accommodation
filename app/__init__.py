@@ -34,9 +34,11 @@ def create_app(config_name: str | None = None) -> Flask:
 
     from app.routes.main import main_bp
     from app.routes.auth import auth_bp
+    from app.routes.accommodation import accommodation_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp, url_prefix="/auth")
+    app.register_blueprint(accommodation_bp, url_prefix="/acomodacoes")
 
     from app.routes.errors import register_error_handlers
     register_error_handlers(app)

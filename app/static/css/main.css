@@ -15,8 +15,14 @@ nav {
   border-bottom: 1px solid #e0e0e0;
 }
 
-nav a { text-decoration: none; color: #333; }
-nav a:hover { color: #0066cc; }
+/* Links: mesmo estilo em toda a página */
+a {
+  color: #0066cc;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
 
 main {
   max-width: 800px;
@@ -40,15 +46,6 @@ main {
   color: #666;
 }
 
-.site-credits a {
-  color: #0066cc;
-  text-decoration: none;
-}
-
-.site-credits a:hover {
-  text-decoration: underline;
-}
-
 .site-footer {
   margin-top: 3rem;
   padding: 1.5rem 2rem;
@@ -63,15 +60,6 @@ main {
   max-width: 800px;
   margin: 0 auto;
   line-height: 1.5;
-}
-
-.site-footer a {
-  color: #0066cc;
-  text-decoration: none;
-}
-
-.site-footer a:hover {
-  text-decoration: underline;
 }
 
 .alert {
