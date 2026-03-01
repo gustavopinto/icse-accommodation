@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastro{% endblock %}
+
+{% block content %}
+<h1>Criar Conta</h1>
+<form method="POST">
+  {{ form.hidden_tag() }}
+
+  <div>
+    {{ form.name.label }}
+    {{ form.name() }}
+    {% for error in form.name.errors %}
+      <span class="error">{{ error }}</span>
+    {% endfor %}
+  </div>
+
+  <div>
+    {{ form.email.label }}
+    {{ form.email(placeholder="seu@email.com") }}
+    {% for error in form.email.errors %}
+      <span class="error">{{ error }}</span>
+    {% endfor %}
+  </div>
+
+  <div>
+    {{ form.password.label }}
+    {{ form.password() }}
+    {% for error in form.password.errors %}
+      <span class="error">{{ error }}</span>
+    {% endfor %}
+  </div>
+
+  <div>
+    {{ form.confirm_password.label }}
+    {{ form.confirm_password() }}
+    {% for error in form.confirm_password.errors %}
+      <span class="error">{{ error }}</span>
+    {% endfor %}
+  </div>
+
+  {{ form.submit() }}
+</form>
+
+<p>Já tem conta? <a href="{{ url_for('auth.login') }}">Entrar</a></p>
+{% endblock %}
