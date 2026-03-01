@@ -6,9 +6,8 @@ dist/
 build/
 .venv/
 venv/
-# instance/ — ignora conteúdo local, mas mantém o JSON de acomodações no repo
+# instance/ — dados locais (acomodações agora estão no banco)
 instance/*
-!instance/.accommodation_data.json
 *.db
 *.sqlite3
 .pytest_cache/

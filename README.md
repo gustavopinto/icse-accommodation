@@ -16,7 +16,7 @@ Site para que participantes do [ICSE 2026](https://conf.researchr.org/home/icse-
 - **Python 3.11+** / **Flask 3**
 - **Flask-SQLAlchemy** + **Flask-Migrate** (Alembic)
 - **Flask-WTF** (formulários com CSRF)
-- **SQLite** em desenvolvimento, **PostgreSQL** em produção
+- **PostgreSQL** (ex.: [Neon](https://neon.tech)); SQLite só para testes locais opcionais
 
 ## Configuração local
 
@@ -32,17 +32,19 @@ source .venv/bin/activate
 **2. Instalar dependências**
 
 ```bash
-pip install -r requirements-dev.txt
+pip install -r requirements.txt
+# ou requirements-dev.txt se for desenvolver
 ```
 
 **3. Variáveis de ambiente**
 
-Crie um arquivo `.env` na raiz:
+Copie `.env.example` para `.env` e preencha. **Nunca commite o `.env`** (credenciais).
 
 ```env
 FLASK_ENV=development
 SECRET_KEY=troque-por-uma-chave-segura
-# DATABASE_URL=sqlite:///app.db  ← padrão, pode omitir
+# Obrigatório para rodar com banco real:
+DATABASE_URL=postgresql://USER:PASSWORD@HOST/DB?sslmode=require
 ```
 
 **4. Banco de dados**
