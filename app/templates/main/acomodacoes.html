@@ -3,7 +3,7 @@
 {% block title %}Acomodações{% endblock %}
 
 {% block content %}
-<h1>Pessoas procurando Acomodações (<strong>{{ requests|length }})</strong></h1>
+<h1>Pessoas procurando acomodações (<strong>{{ requests|length }})</strong></h1>
 
 {% if requests %}
 <table>
@@ -14,6 +14,7 @@
       <th>Período</th>
       <th>Gênero</th>
       <th>Fumante</th>
+      <th>Aceita Fumante</th>
       <th>Preferência de colega</th>
       <th>E-mail</th>
     </tr>
@@ -24,10 +25,28 @@
       <td>{{ req.name }}</td>
       <td>{{ req.institution }}</td>
       <td>{{ req.check_in.strftime('%d/%m/%Y') }} – {{ req.check_out.strftime('%d/%m/%Y') }}</td>
-      <td>{{ req.gender|capitalize }}</td>
-      <td>{{ 'Sim' if req.smoker else 'Não' }}</td>
+      <td>
+        {% if req.gender == 'masculino' %}<span class="icon-gender" title="Masculino">♂</span>
+        {% elif req.gender == 'feminino' %}<span class="icon-gender" title="Feminino">♀</span>
+        {% else %}{{ req.gender|capitalize }}{% endif %}
+      </td>
+      <td>
+        {% if req.smoker %}<span class="icon-yes" title="Sim">✓</span>
+        {% else %}<span class="icon-no" title="Não">✗</span>{% endif %}
+      </td>
+      <td>
+        {% if req.accepts_smoker %}<span class="icon-yes" title="Sim">✓</span>
+        {% else %}<span class="icon-no" title="Não">✗</span>{% endif %}
+      </td>
       <td>{{ req.roommate_gender_pref|capitalize }}</td>
-      <td>{{ req.email }}</td>
+      <td>
+        {% set email_parts = req.email.split('@', 1) %}
+        {% if email_parts|length == 2 %}
+          {{ email_parts[0][0] }}***@{{ email_parts[1] }}
+        {% else %}
+          ***
+        {% endif %}
+      </td>
     </tr>
     {% endfor %}
   </tbody>

@@ -61,4 +61,19 @@ form input[type="submit"]:hover { background: #0052a3; }
   margin-top: 3rem;
 }
 
+.icon-gender {
+  font-size: 1.25em;
+  line-height: 1;
+}
+.icon-yes {
+  color: #0d7d0d;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+.icon-no {
+  color: #999;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
 .error { color: #dc3545; font-size: 0.875rem; }
