@@ -1,9 +1,19 @@
 {% extends "base.html" %}
 
-{% block title %}Acomodações{% endblock %}
+{% block title %}Acomodações — ICSE 2026{% endblock %}
 
 {% block content %}
-<h1>Pessoas procurando acomodações (<strong>{{ requests|length }})</strong></h1>
+<h1>Acomodações</h1>
+
+<p class="site-description">
+  Este é um <strong>site em versão draft</strong> para que pessoas possam buscar compartilhar hospedagem no <strong><a href="https://conf.researchr.org/home/icse-2026" target="_blank" rel="noopener">ICSE 2026</a></strong> (Rio de Janeiro).
+</p>
+
+<p class="site-credits">
+  O site foi construído por <a href="https://gustavopinto.org" target="_blank" rel="noopener">Gustavo Pinto</a> e <strong>não tem nenhuma relação com o evento principal</strong>. É um site individual. Quem quiser contribuir pode enviar bugs ou pull requests em <a href="https://github.com/gustavopinto/icse-accommodation" target="_blank" rel="noopener">github.com/gustavopinto/icse-accommodation</a>.
+</p>
+
+<h2>Pessoas procurando acomodações ({{ requests|length }})</h2>
 
 {% if requests %}
 <table>
@@ -12,10 +22,10 @@
       <th>Nome</th>
       <th>Instituição</th>
       <th>Período</th>
-      <th>Gênero</th>
+      <th>Eu me identifico como</th>
       <th>Fumante</th>
       <th>Aceita Fumante</th>
-      <th>Preferência de colega</th>
+      <th>Procuro pessoas</th>
       <th>E-mail</th>
     </tr>
   </thead>
@@ -24,10 +34,12 @@
     <tr>
       <td>{{ req.name }}</td>
       <td>{{ req.institution }}</td>
-      <td>{{ req.check_in.strftime('%d/%m/%Y') }} – {{ req.check_out.strftime('%d/%m/%Y') }}</td>
+      <td>{{ req.check_in.strftime('%d/%m') }} – {{ req.check_out.strftime('%d/%m') }}</td>
       <td>
-        {% if req.gender == 'masculino' %}<span class="icon-gender" title="Masculino">♂</span>
-        {% elif req.gender == 'feminino' %}<span class="icon-gender" title="Feminino">♀</span>
+        {% if req.gender == 'masculino' %}<span class="icon-gender" title="Masculino">♂</span> Masculino
+        {% elif req.gender == 'feminino' %}<span class="icon-gender" title="Feminino">♀</span> Feminino
+        {% elif req.gender == 'nao_binario' %}Não-binário
+        {% elif req.gender == 'prefiro_nao_dizer' %}Prefiro não dizer
         {% else %}{{ req.gender|capitalize }}{% endif %}
       </td>
       <td>
@@ -38,7 +50,13 @@
         {% if req.accepts_smoker %}<span class="icon-yes" title="Sim">✓</span>
         {% else %}<span class="icon-no" title="Não">✗</span>{% endif %}
       </td>
-      <td>{{ req.roommate_gender_pref|capitalize }}</td>
+      <td>
+        {% if req.roommate_gender_pref == 'sem_restricoes' or req.roommate_gender_pref == 'qualquer' %}Sem restrições
+        {% elif req.roommate_gender_pref == 'nao_binario' %}Não-binário
+        {% elif req.roommate_gender_pref == 'masculino' %}Masculino
+        {% elif req.roommate_gender_pref == 'feminino' %}Feminino
+        {% else %}Outro{% endif %}
+      </td>
       <td>
         {% set email_parts = req.email.split('@', 1) %}
         {% if email_parts|length == 2 %}
@@ -60,80 +78,101 @@
 
 <form method="POST" action="{{ url_for('accommodation.create') }}">
   {{ form.hidden_tag() }}
+  <p class="form-required-note">Campos marcados com <span class="required">*</span> são obrigatórios.</p>
 
-  <div>
-    {{ form.name.label }}
-    {{ form.name() }}
-    {% for error in form.name.errors %}
-      <span class="error">{{ error }}</span>
-    {% endfor %}
+  <div class="form-row">
+    <div class="form-label-cell">{{ form.name.label }} <span class="required">*</span></div>
+    <div class="field-wrap">
+      {{ form.name() }}
+      {% for error in form.name.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
   </div>
 
-  <div>
-    {{ form.email.label }}
-    {{ form.email() }}
-    {% for error in form.email.errors %}
-      <span class="error">{{ error }}</span>
-    {% endfor %}
+  <div class="form-row">
+    <div class="form-label-cell">{{ form.email.label }} <span class="required">*</span></div>
+    <div class="field-wrap">
+      {{ form.email() }}
+      {% for error in form.email.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
   </div>
 
-  <div>
-    {{ form.institution.label }}
-    {{ form.institution() }}
-    {% for error in form.institution.errors %}
-      <span class="error">{{ error }}</span>
-    {% endfor %}
+  <div class="form-row">
+    <div class="form-label-cell">{{ form.institution.label }} <span class="required">*</span></div>
+    <div class="field-wrap">
+      {{ form.institution() }}
+      {% for error in form.institution.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
   </div>
 
-  <div>
-    {{ form.check_in.label }}
-    {{ form.check_in() }}
-    {% for error in form.check_in.errors %}
-      <span class="error">{{ error }}</span>
-    {% endfor %}
+  <div class="form-row">
+    <div class="form-label-cell">{{ form.check_in.label }} <span class="required">*</span></div>
+    <div class="field-wrap">
+      {{ form.check_in() }}
+      {% for error in form.check_in.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
   </div>
 
-  <div>
-    {{ form.check_out.label }}
-    {{ form.check_out() }}
-    {% for error in form.check_out.errors %}
-      <span class="error">{{ error }}</span>
-    {% endfor %}
+  <div class="form-row">
+    <div class="form-label-cell">{{ form.check_out.label }} <span class="required">*</span></div>
+    <div class="field-wrap">
+      {{ form.check_out() }}
+      {% for error in form.check_out.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
   </div>
 
-  <div>
-    {{ form.gender.label }}
-    {{ form.gender() }}
-    {% for error in form.gender.errors %}
-      <span class="error">{{ error }}</span>
-    {% endfor %}
+  <div class="form-row">
+    <div class="form-label-cell">{{ form.gender.label }} <span class="required">*</span></div>
+    <div class="field-wrap">
+      {{ form.gender() }}
+      {% for error in form.gender.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
   </div>
 
-  <div>
-    {{ form.roommate_gender_pref.label }}
-    {{ form.roommate_gender_pref() }}
-    {% for error in form.roommate_gender_pref.errors %}
-      <span class="error">{{ error }}</span>
-    {% endfor %}
+  <div class="form-row">
+    <div class="form-label-cell">{{ form.roommate_gender_pref.label }} <span class="required">*</span></div>
+    <div class="field-wrap">
+      {{ form.roommate_gender_pref() }}
+      {% for error in form.roommate_gender_pref.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
   </div>
 
-  <div>
-    <label>{{ form.smoker() }} {{ form.smoker.label.text }}</label>
-    {% for error in form.smoker.errors %}
-      <span class="error">{{ error }}</span>
-    {% endfor %}
+  <div class="form-row checkbox-row">
+    <div class="form-label-cell">{{ form.smoker.label }}</div>
+    <div class="field-wrap">
+      {{ form.smoker() }}
+      {% for error in form.smoker.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
   </div>
 
-  <div>
-    {{ form.notes.label }}
-    {{ form.notes() }}
-    {% for error in form.notes.errors %}
-      <span class="error">{{ error }}</span>
-    {% endfor %}
+  <div class="form-row">
+    <div class="form-label-cell">{{ form.social_media.label }}</div>
+    <div class="field-wrap">
+      {{ form.social_media() }}
+      {% for error in form.social_media.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
   </div>
 
-  <div>
-    {{ form.submit() }}
+  <div class="form-row">
+    <div class="form-label-cell">{{ form.website.label }}</div>
+    <div class="field-wrap">
+      {{ form.website() }}
+      {% for error in form.website.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-label-cell">{{ form.notes.label }}</div>
+    <div class="field-wrap">
+      {{ form.notes() }}
+      {% for error in form.notes.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
+  </div>
+
+  <div class="form-row submit-row">
+    <div class="form-label-cell"></div>
+    <div class="field-wrap">
+      {{ form.submit() }}
+    </div>
   </div>
 </form>
 </section>
