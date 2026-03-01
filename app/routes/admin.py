@@ -11,9 +11,9 @@ admin_bp = Blueprint("admin", __name__)
 
 
 class AdminLoginForm(FlaskForm):
-    username = StringField("Usuário", validators=[DataRequired()])
-    password = PasswordField("Senha", validators=[DataRequired()])
-    submit = SubmitField("Entrar")
+    username = StringField("Username", validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField("Sign in")
 
 
 def admin_required(f):
@@ -32,11 +32,13 @@ def login():
 
     form = AdminLoginForm()
     if form.validate_on_submit():
-        admin = Admin.query.filter_by(username=form.username.data).first()
+        admin = Admin.query.filter_by(
+            username=form.username.data, active=True
+        ).first()
         if admin and admin.check_password(form.password.data):
             session["admin_logged_in"] = True
             return redirect(url_for("admin.index"))
-        flash("Usuário ou senha incorretos.", "danger")
+        flash("Invalid username or password.", "danger")
 
     return render_template("admin/login.html", form=form)
 
@@ -50,7 +52,7 @@ def logout():
 @admin_bp.route("/")
 @admin_required
 def index():
-    entries = AccommodationRequest.query.order_by(
+    entries = AccommodationRequest.query.filter_by(active=True).order_by(
         AccommodationRequest.created_at.desc()
     ).all()
     return render_template("admin/index.html", entries=entries)
@@ -61,9 +63,9 @@ def index():
 def delete(entry_id):
     entry = db.session.get(AccommodationRequest, entry_id)
     if entry:
-        db.session.delete(entry)
+        entry.active = False
         db.session.commit()
-        flash(f"Registro de {entry.name} removido.", "success")
+        flash(f"Entry for {entry.name} removed.", "success")
     else:
-        flash("Registro não encontrado.", "danger")
+        flash("Entry not found.", "danger")
     return redirect(url_for("admin.index"))

@@ -1,14 +1,15 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, current_app, render_template, redirect, url_for, flash
 from app import db
 from app.forms.accommodation import AccommodationRequestForm
 from app.models.accommodation import AccommodationRequest
+from app.email_service import send_new_accommodation_notification
 
 accommodation_bp = Blueprint("accommodation", __name__)
 
 
 @accommodation_bp.route("/", methods=["GET"])
 def index():
-    requests = AccommodationRequest.query.order_by(
+    requests = AccommodationRequest.query.filter_by(active=True).order_by(
         AccommodationRequest.created_at.desc()
     ).all()
     form = AccommodationRequestForm()
@@ -36,17 +37,21 @@ def create():
             )
             db.session.add(entry)
             db.session.commit()
+            try:
+                send_new_accommodation_notification(entry)
+            except Exception as e:
+                current_app.logger.exception("Failed to send new accommodation notification email: %s", e)
         except Exception:
             db.session.rollback()
-            flash("Erro ao salvar. Tente novamente.", "error")
-            requests = AccommodationRequest.query.order_by(
+            flash("Error saving. Please try again.", "error")
+            requests = AccommodationRequest.query.filter_by(active=True).order_by(
                 AccommodationRequest.created_at.desc()
             ).all()
             return render_template("main/acomodacoes.html", requests=requests, form=form)
-        flash("Pedido de acomodação registrado com sucesso!", "success")
+        flash("Accommodation request submitted successfully!", "success")
         return redirect(url_for("accommodation.index"))
 
-    requests = AccommodationRequest.query.order_by(
+    requests = AccommodationRequest.query.filter_by(active=True).order_by(
         AccommodationRequest.created_at.desc()
     ).all()
     return render_template("main/acomodacoes.html", requests=requests, form=form)

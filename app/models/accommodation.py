@@ -21,6 +21,7 @@ class AccommodationRequest(db.Model):
     created_at = db.Column(
         db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
     )
+    active = db.Column(db.Boolean, default=True, nullable=False)
 
     def __repr__(self) -> str:
         return f"<AccommodationRequest {self.name} ({self.email})>"

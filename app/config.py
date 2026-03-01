@@ -17,6 +17,15 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     WTF_CSRF_ENABLED = True
 
+    # E-mail (MailerSend SMTP). Notifications sent to MAIL_NOTIFY_TO on new accommodation.
+    SMTP_HOST = os.environ.get("SMTP_HOST", "smtp.mailersend.net")
+    SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
+    SMTP_USERNAME = os.environ.get("SMTP_USERNAME") or ""
+    SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD") or ""
+    MAIL_DEFAULT_SENDER = os.environ.get("MAIL_DEFAULT_SENDER", "noreply@localhost")
+    MAIL_DEFAULT_SENDER_NAME = os.environ.get("MAIL_DEFAULT_SENDER_NAME", "")
+    MAIL_NOTIFY_TO = os.environ.get("MAIL_NOTIFY_TO", "gpinto@ufpa.br")
+
 
 class DevelopmentConfig(Config):
     DEBUG = True

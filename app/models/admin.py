@@ -9,6 +9,7 @@ class Admin(db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False, index=True)
     password_hash = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    active = db.Column(db.Boolean, default=True, nullable=False)
 
     def set_password(self, password: str) -> None:
         self.password_hash = bcrypt.generate_password_hash(password).decode("utf-8")
